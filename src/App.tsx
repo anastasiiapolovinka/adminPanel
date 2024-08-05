@@ -6,30 +6,33 @@ import CatalogView from './components/CatalogView.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RequestList from './components/requests/RequestList.tsx'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <ModeratorPanel />,
-    children: [
-      {
-        path: '/',
-        element: <RequestList />,
-      },
-      {
-        path: '/add-material',
-        element: <AddMaterial />,
-      },
-      {
-        path: '/request/:id',
-        element: <RequestDetail />,
-      },
-      {
-        path: '/catalog',
-        element: <CatalogView />,
-      },
-    ],
-  },
-])
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <ModeratorPanel />,
+      children: [
+        {
+          path: '/',
+          element: <RequestList />,
+        },
+        {
+          path: '/add-material',
+          element: <AddMaterial />,
+        },
+        {
+          path: '/request/:id',
+          element: <RequestDetail />,
+        },
+        {
+          path: '/catalog',
+          element: <CatalogView />,
+        },
+      ],
+    },
+  ],
+  { basename: import.meta.env.DEV ? '/' : '/adminPanel/' }
+)
 
 const App = observer(() => {
   return <RouterProvider router={router} />

@@ -44,5 +44,13 @@
 
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/your-username/admin-panel.git
+   git clone https://github.com/anastasiiapolovinka/adminPanel.git
+   ```
+2. Установите зависимости:
+   ```bash
+   npm init
+   ```
+3. Запустите проект:
+   ```bash
+   npm run dev
    ```
