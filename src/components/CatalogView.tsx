@@ -9,6 +9,37 @@ import { SubCategoryForm } from './SubCategoryForm'
 import { CategoryForm } from './CategoryForm'
 import { Button, Search, Title, Wrapper } from './uikit'
 
+const findNodeByKey = (data: Category[], key: number): Category | null => {
+  // eslint-disable-next-line prefer-const
+  for (let item of data) {
+    if (item.id === key) {
+      return item
+    }
+    if (item.children) {
+      const found = findNodeByKey(item.children, key)
+      if (found) {
+        return found
+      }
+    }
+  }
+  return null
+}
+
+const getParentKey = (key: string, tree: Category[]): string | null => {
+  let parentKey: string | null = null
+  for (let i = 0; i < tree.length; i++) {
+    const node = tree[i]
+    if (node.children) {
+      if (node.children.some((item) => item.id.toString() === key)) {
+        parentKey = node.id.toString()
+      } else if (getParentKey(key, node.children)) {
+        parentKey = getParentKey(key, node.children)
+      }
+    }
+  }
+  return parentKey
+}
+
 interface CategoryDataNode extends DataNode {
   dataRef: Category
 }
@@ -53,21 +84,6 @@ const CatalogView: React.FC = observer(() => {
     }
   }
   generateList(toJS(catalogStore.catalog))
-
-  const getParentKey = (key: string, tree: Category[]): string | null => {
-    let parentKey: string | null = null
-    for (let i = 0; i < tree.length; i++) {
-      const node = tree[i]
-      if (node.children) {
-        if (node.children.some((item) => item.id.toString() === key)) {
-          parentKey = node.id.toString()
-        } else if (getParentKey(key, node.children)) {
-          parentKey = getParentKey(key, node.children)
-        }
-      }
-    }
-    return parentKey
-  }
 
   const renderTreeNodes = (data: Category[]): CategoryDataNode[] =>
     data.map((item) => {
@@ -117,22 +133,6 @@ const CatalogView: React.FC = observer(() => {
 
     // Move subcategory
     catalogStore.moveSubCategory(dragKey, dropKey)
-  }
-
-  const findNodeByKey = (data: Category[], key: number): Category | null => {
-    // eslint-disable-next-line prefer-const
-    for (let item of data) {
-      if (item.id === key) {
-        return item
-      }
-      if (item.children) {
-        const found = findNodeByKey(item.children, key)
-        if (found) {
-          return found
-        }
-      }
-    }
-    return null
   }
 
   return (

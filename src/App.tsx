@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import ModeratorPanel from './components/ModeratorPanel.tsx'
 import RequestDetail from './components/requests/RequestDetail.tsx'
 import AddMaterial from './components/AddMaterial.tsx'
@@ -34,8 +33,8 @@ const router = createBrowserRouter(
   { basename: import.meta.env.DEV ? '/' : '/adminPanel/' }
 )
 
-const App = observer(() => {
+const App = () => {
   return <RouterProvider router={router} />
-})
+}
 
 export default App

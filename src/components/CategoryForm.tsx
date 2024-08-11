@@ -97,21 +97,19 @@ export const CategoryForm: FC<CategoryFormProps> = observer(({ onClose }) => {
   )
 
   return (
-    <>
-      <Tabs
-        defaultActiveKey='1'
-        onChange={handleTabChange}
-        centered
-        items={[PlusOutlined, EditOutlined].map((Icon, i) => {
-          const id = String(i + 1)
-          return {
-            key: id,
-            label: i === 0 ? 'Добавить' : 'Редактировать',
-            children: i === 0 ? <AddForm /> : <EditForm />,
-            icon: <Icon />,
-          }
-        })}
-      />
-    </>
+    <Tabs
+      defaultActiveKey='1'
+      onChange={handleTabChange}
+      centered
+      items={[PlusOutlined, EditOutlined].map((Icon, i) => {
+        const id = String(i + 1)
+        return {
+          key: id,
+          label: i === 0 ? 'Добавить' : 'Редактировать',
+          children: i === 0 ? <AddForm /> : <EditForm />,
+          icon: <Icon />,
+        }
+      })}
+    />
   )
 })

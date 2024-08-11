@@ -6,13 +6,17 @@ import { unitStore } from '@/stores/UnitStore'
 import { Material } from '@/types'
 import { createOption } from '@/utils'
 import { Button, Form, Space } from 'antd'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AutoCompleteField, InputField, Wrapper } from './uikit'
+import { observer } from 'mobx-react-lite'
 
-const AddMaterial = () => {
+const AddMaterial = observer(() => {
   const [form] = Form.useForm()
 
-  const materialOptions = materialStore.materials.map(createOption)
+  const materialOptions = useMemo(
+    () => materialStore.materials.map(createOption),
+    [materialStore.materials]
+  )
 
   const handleMaterialChange = (value: string) => {
     const currentMaterial = materialStore.findMaterialByName(value) || null
@@ -23,7 +27,10 @@ const AddMaterial = () => {
     }
   }
 
-  const categoryOptions = catalogStore.catalog.map(createOption)
+  const categoryOptions = useMemo(
+    () => catalogStore.catalog.map(createOption),
+    [catalogStore.catalog]
+  )
 
   const handleCategoryChange = (value: string) => {
     const selectedCategory = catalogStore.findCategoryByName(value)
@@ -39,10 +46,15 @@ const AddMaterial = () => {
     catalogStore.selectSubCategory(selectedSubCategory ?? null)
   }
 
-  const subCategoryOptions =
-    catalogStore.selectedCategory?.children.map(createOption)
+  const subCategoryOptions = useMemo(
+    () => catalogStore.selectedCategory?.children.map(createOption),
+    [catalogStore.selectedCategory?.children]
+  )
 
-  const brandOptions = brandStore.brands.map(createOption)
+  const brandOptions = useMemo(
+    () => brandStore.brands.map(createOption),
+    [brandStore.brands]
+  )
 
   // Units
   const [unit, setUnit] = useState('')
@@ -50,7 +62,10 @@ const AddMaterial = () => {
     setUnit(value)
   }
 
-  const unitOptions = unitStore.units.map(createOption)
+  const unitOptions = useMemo(
+    () => unitStore.units.map(createOption),
+    [unitStore.units]
+  )
 
   const onFinish = (values: Material) => {
     materialStore.addMaterial({
@@ -188,6 +203,6 @@ const AddMaterial = () => {
       </Form>
     </Wrapper>
   )
-}
+})
 
 export default AddMaterial
